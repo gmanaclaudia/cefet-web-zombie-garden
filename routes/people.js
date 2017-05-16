@@ -67,6 +67,8 @@ router.get('/new/', function(req, res) {
 //      - Em caso de erro do INSERT, colocar mensagem vermelhinha
 
 
+
+
 /* DELETE uma pessoa */
 // Exercício 2: IMPLEMENTAR AQUI
 // Dentro da callback de tratamento da rota:
@@ -74,5 +76,21 @@ router.get('/new/', function(req, res) {
 //   2. Redirecionar para a rota de listagem de pessoas
 //      - Em caso de sucesso do INSERT, colocar uma mensagem feliz
 //      - Em caso de erro do INSERT, colocar mensagem vermelhinha
+
+router.delete('/:id', function(req, res) {
+  let id = db.escape(req.params.id);
+  let query = 'DELETE FROM person WHERE id = ' + id;
+  db.query(query, function(err, result) {
+    if (err)  {
+      //res.send(401, 'Pessoa inexistente');
+      req.flash('error', 'Essa pessoa nao existe!');
+    }
+    else      {
+      req.flash('success', 'A pessoa foi excluida com sucesso');
+      res.redirect('/people/');
+     }
+  });
+});
+
 
 module.exports = router;
