@@ -66,6 +66,20 @@ router.get('/new/', function(req, res) {
 //      - Em caso de sucesso do INSERT, colocar uma mensagem feliz
 //      - Em caso de erro do INSERT, colocar mensagem vermelhinha
 
+router.post('/', function(req, res) {
+  let name = req.body.name;
+  let insercao = 'INSERT INTO person (name, alive) VALUES (\'' + name + '\', true)';
+  db.query(insercao, name, function(err, result) {
+    if (err)  {
+      //res.send(401, 'Pessoa inexistente');
+      req.flash('error', 'Nao foi possivel registrar essa pessoa!');
+    }
+    else      {
+      req.flash('success', 'A pessoa foi registrada com sucesso');
+      res.redirect('/people/');
+     }
+  });
+});
 
 
 
